@@ -3,6 +3,7 @@ import { Routes, Route } from 'react-router-dom';
 import { LanguageProvider } from './context/LanguageContext';
 import Navbar from './components/Navbar';
 import CategoryPage from './components/CategoryPage';
+import TranslatedText from './components/TranslatedText';
 import './index.css';
 
 function App() {
@@ -20,12 +21,12 @@ function App() {
         
         <footer className="footer-rtv">
           <div className="footer-content">
-            <p>© 2026 Aakasham TV. All rights reserved.</p>
+            <p><TranslatedText>© 2026 Aakasham TV. All rights reserved.</TranslatedText></p>
             <div className="footer-links">
-              <a href="#">About Us</a>
-              <a href="#">Contact Us</a>
-              <a href="#">Privacy Policy</a>
-              <a href="#">Terms of Service</a>
+              <a href="#"><TranslatedText>About Us</TranslatedText></a>
+              <a href="#"><TranslatedText>Contact Us</TranslatedText></a>
+              <a href="#"><TranslatedText>Privacy Policy</TranslatedText></a>
+              <a href="#"><TranslatedText>Terms of Service</TranslatedText></a>
             </div>
           </div>
         </footer>

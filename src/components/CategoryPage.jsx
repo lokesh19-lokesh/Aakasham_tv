@@ -3,6 +3,8 @@ import { useParams } from 'react-router-dom';
 import { MOCK_ARTICLES } from '../constants/articlesData';
 import Article from './Article';
 
+import TranslatedText from './TranslatedText';
+
 const CategoryPage = () => {
   const { categoryId, districtId } = useParams();
   
@@ -19,7 +21,7 @@ const CategoryPage = () => {
   return (
     <div className="container">
       <header className="page-header">
-        <h1>{displayTitle}</h1>
+        <h1><TranslatedText>{displayTitle}</TranslatedText></h1>
       </header>
       
       <div className="news-grid">
@@ -28,7 +30,9 @@ const CategoryPage = () => {
             <Article key={article.id} originalArticle={article} />
           ))
         ) : (
-          <p className="no-news">No news articles found for this category.</p>
+          <p className="no-news">
+            <TranslatedText>No news articles found for this category.</TranslatedText>
+          </p>
         )}
       </div>
     </div>

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useLanguage } from '../context/LanguageContext';
+import TranslatedText from './TranslatedText';
 
 const Article = ({ originalArticle }) => {
   const { language, translateContent } = useLanguage();
@@ -56,7 +57,7 @@ const Article = ({ originalArticle }) => {
         </h2>
 
         <div className="article-meta">
-          <span>By {translatedArticle.author}</span> • <span>{translatedArticle.date}</span>
+          <span><TranslatedText>By</TranslatedText> {translatedArticle.author}</span> • <span>{translatedArticle.date}</span>
         </div>
 
         <div className="article-content">
