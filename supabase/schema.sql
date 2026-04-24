@@ -32,6 +32,7 @@ CREATE TABLE articles (
 
 -- Initial Categories
 INSERT INTO categories (name, slug) VALUES 
+('Latest News', 'latest-news'),
 ('Telangana', 'telangana'),
 ('Andhra Pradesh', 'andhra-pradesh'),
 ('National', 'national'),
@@ -43,7 +44,15 @@ INSERT INTO categories (name, slug) VALUES
 ('Business', 'business'),
 ('Technology', 'technology'),
 ('Sports', 'sports'),
-('Videos', 'videos');
+('Videos', 'videos'),
+('Education', 'education'),
+('Health', 'health'),
+('Spiritual', 'spiritual'),
+('Photos', 'photos'),
+('E-Paper', 'e-paper'),
+('Complaints', 'complaints'),
+('Jobs', 'jobs'),
+('Opinion', 'opinion');
 
 -- Initial Districts (Telangana)
 DO $$

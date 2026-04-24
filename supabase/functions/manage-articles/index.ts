@@ -43,6 +43,31 @@ serve(async (req) => {
       })
     }
 
+    if (action === 'update-article') {
+      const { id, title, content, image_url, video_url, category_id, district_id, is_hero_slider, whatsapp_link } = data
+      
+      const { data: article, error } = await supabaseClient
+        .from('articles')
+        .update({ 
+          title, 
+          content, 
+          image_url, 
+          video_url, 
+          category_id: category_id ? parseInt(category_id) : null, 
+          district_id: district_id ? parseInt(district_id) : null, 
+          is_hero_slider,
+          whatsapp_link 
+        })
+        .eq('id', id)
+        .select()
+
+      if (error) throw error
+      return new Response(JSON.stringify(article), {
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        status: 200,
+      })
+    }
+
     if (action === 'get-articles') {
       const { category_slug, district_name, limit = 10 } = data
       let query = supabaseClient.from('articles').select('*, categories(*), districts(*)')

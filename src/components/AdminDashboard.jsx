@@ -42,6 +42,17 @@ const AdminDashboard = () => {
     navigate('/admin');
   };
 
+  const handleDelete = async (id) => {
+    if (window.confirm('Are you sure you want to delete this article?')) {
+      const { error } = await supabase.from('articles').delete().eq('id', id);
+      if (!error) {
+        fetchArticles();
+      } else {
+        alert('Error deleting article: ' + error.message);
+      }
+    }
+  };
+
   if (!session) return null;
 
   return (
@@ -82,8 +93,18 @@ const AdminDashboard = () => {
                   <td>{article.categories?.name}</td>
                   <td>{new Date(article.created_at).toLocaleDateString()}</td>
                   <td>
-                    <button className="edit-btn">Edit</button>
-                    <button className="delete-btn">Delete</button>
+                    <button 
+                      className="edit-btn" 
+                      onClick={() => navigate(`/admin/add-news?id=${article.id}`)}
+                    >
+                      Edit
+                    </button>
+                    <button 
+                      className="delete-btn" 
+                      onClick={() => handleDelete(article.id)}
+                    >
+                      Delete
+                    </button>
                   </td>
                 </tr>
               ))}
