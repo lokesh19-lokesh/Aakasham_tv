@@ -4,6 +4,10 @@ import { LanguageProvider } from './context/LanguageContext';
 import Navbar from './components/Navbar';
 import CategoryPage from './components/CategoryPage';
 import TranslatedText from './components/TranslatedText';
+import AdminLogin from './components/AdminLogin';
+import AdminDashboard from './components/AdminDashboard';
+import AddNews from './components/AddNews';
+import ArticleDetail from './components/ArticleDetail';
 import './index.css';
 
 function App() {
@@ -14,6 +18,10 @@ function App() {
         <main className="main-content">
           <Routes>
             <Route path="/" element={<CategoryPage />} />
+            <Route path="/admin" element={<AdminLogin />} />
+            <Route path="/admin/dashboard" element={<AdminDashboard />} />
+            <Route path="/admin/add-news" element={<AddNews />} />
+            <Route path="/article/:id" element={<ArticleDetail />} />
             <Route path="/:categoryId" element={<CategoryPage />} />
             <Route path="/:categoryId/:districtId" element={<CategoryPage />} />
           </Routes>

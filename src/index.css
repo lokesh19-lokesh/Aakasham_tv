@@ -279,9 +279,21 @@ body {
   flex-direction: column;
 }
 
-.news-article:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+.article-image {
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+}
+
+.article-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.news-article:hover .article-image img {
+  transform: scale(1.1);
 }
 
 .article-content-wrapper {
