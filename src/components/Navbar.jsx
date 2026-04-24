@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { Clock, Calendar } from 'lucide-react';
 import { TELANGANA_DISTRICTS, ANDHRA_PRADESH_DISTRICTS, MORE_CATEGORIES } from '../constants/districtData';
 import logo from '../assets/logo.png';
 import LanguageSelector from './LanguageSelector';
@@ -8,7 +9,13 @@ import TranslatedText from './TranslatedText';
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(null);
+  const [dateTime, setDateTime] = useState(new Date());
   const location = useLocation();
+
+  useEffect(() => {
+    const timer = setInterval(() => setDateTime(new Date()), 1000);
+    return () => clearInterval(timer);
+  }, []);
 
   useEffect(() => {
     setIsMenuOpen(false);
@@ -20,6 +27,20 @@ const Navbar = () => {
   const handleDropdown = (name) => {
     if (activeDropdown === name) setActiveDropdown(null);
     else setActiveDropdown(name);
+  };
+
+  const formatDate = () => {
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    const langMap = { 'te': 'te-IN', 'hi': 'hi-IN', 'en': 'en-US' };
+    const currentLang = localStorage.getItem('app_language') || 'te';
+    return dateTime.toLocaleDateString(langMap[currentLang] || 'te-IN', options);
+  };
+
+  const formatTime = () => {
+    const options = { hour: '2-digit', minute: '2-digit', second: '2-digit' };
+    const langMap = { 'te': 'te-IN', 'hi': 'hi-IN', 'en': 'en-US' };
+    const currentLang = localStorage.getItem('app_language') || 'te';
+    return dateTime.toLocaleTimeString(langMap[currentLang] || 'te-IN', options);
   };
 
   const navItems = [
@@ -41,6 +62,18 @@ const Navbar = () => {
 
   return (
     <nav className="navbar-rtv">
+      <div className="nav-top-bar">
+        <div className="container top-bar-content">
+          <div className="date-time-item">
+            <Calendar size={14} />
+            <span>{formatDate()}</span>
+          </div>
+          <div className="date-time-item">
+            <Clock size={14} />
+            <span>{formatTime()}</span>
+          </div>
+        </div>
+      </div>
       <div className="nav-main-row">
         <div className="nav-left">
           <Link to="/" className="nav-logo-rtv">
