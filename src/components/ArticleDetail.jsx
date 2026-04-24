@@ -25,6 +25,16 @@ const ArticleDetail = () => {
     setLoading(false);
   };
 
+  const getEmbedUrl = (url) => {
+    if (!url) return '';
+    let videoId = '';
+    if (url.includes('youtube.com/watch?v=')) videoId = url.split('v=')[1]?.split('&')[0];
+    else if (url.includes('youtu.be/')) videoId = url.split('youtu.be/')[1]?.split('?')[0];
+    else if (url.includes('youtube.com/embed/')) return url;
+    else if (url.includes('youtube.com/shorts/')) videoId = url.split('shorts/')[1]?.split('?')[0];
+    return videoId ? `https://www.youtube.com/embed/${videoId}` : url;
+  };
+
   if (loading) return <div className="container">Loading article...</div>;
   if (!article) return <div className="container">Article not found.</div>;
 
@@ -68,7 +78,7 @@ const ArticleDetail = () => {
           {article.video_url && (
             <div className="article-video-embed">
               <iframe 
-                src={article.video_url.replace('watch?v=', 'embed/')} 
+                src={getEmbedUrl(article.video_url)} 
                 title="News Video"
                 frameBorder="0"
                 allowFullScreen
