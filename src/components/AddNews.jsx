@@ -17,10 +17,38 @@ const AddNews = () => {
     whatsapp_link: ''
   });
   const navigate = useNavigate();
+  const searchParams = new URLSearchParams(window.location.search);
+  const articleId = searchParams.get('id');
 
   useEffect(() => {
     fetchCategories();
-  }, []);
+    if (articleId) {
+      fetchArticleForEdit(articleId);
+    }
+  }, [articleId]);
+
+  const fetchArticleForEdit = async (id) => {
+    setLoading(true);
+    const { data, error } = await supabase
+      .from('articles')
+      .select('*')
+      .eq('id', id)
+      .single();
+
+    if (!error && data) {
+      setFormData({
+        title: data.title || '',
+        content: data.content || '',
+        image_url: data.image_url || '',
+        video_url: data.video_url || '',
+        category_id: data.category_id || '',
+        district_id: data.district_id || '',
+        is_hero_slider: data.is_hero_slider || false,
+        whatsapp_link: data.whatsapp_link || ''
+      });
+    }
+    setLoading(false);
+  };
 
   useEffect(() => {
     if (formData.category_id) {
@@ -93,18 +121,20 @@ const AddNews = () => {
     e.preventDefault();
     setLoading(true);
 
-    // Using Edge Function for backend logic as requested
+    const action = articleId ? 'update-article' : 'create-article';
+    const payload = articleId ? { ...formData, id: articleId } : formData;
+
     const { data, error } = await supabase.functions.invoke('manage-articles', {
       body: { 
-        action: 'create-article', 
-        data: formData 
+        action, 
+        data: payload 
       }
     });
 
     if (error) {
-      alert('Error creating article: ' + error.message);
+      alert(`Error ${articleId ? 'updating' : 'creating'} article: ` + error.message);
     } else {
-      alert('Article created successfully!');
+      alert(`Article ${articleId ? 'updated' : 'created'} successfully!`);
       navigate('/admin/dashboard');
     }
     setLoading(false);
@@ -113,8 +143,8 @@ const AddNews = () => {
   return (
     <div className="add-news-container">
       <div className="form-header">
-        <h2>Post New Article</h2>
-        <p>Fill in the details below to publish news across any of the 42+ pages.</p>
+        <h2>{articleId ? 'Edit Article' : 'Post New Article'}</h2>
+        <p>{articleId ? 'Update the details of your article below.' : 'Fill in the details below to publish news across any of the 42+ pages.'}</p>
       </div>
       
       <form onSubmit={handleSubmit} className="news-form">
@@ -251,7 +281,7 @@ const AddNews = () => {
         <div className="form-actions">
           <button type="button" onClick={() => navigate('/admin/dashboard')} className="cancel-btn">Discard</button>
           <button type="submit" disabled={loading} className="submit-btn">
-            {loading ? 'Publishing...' : 'Publish News'}
+            {loading ? (articleId ? 'Updating...' : 'Publishing...') : (articleId ? 'Update News' : 'Publish News')}
           </button>
         </div>
       </form>
