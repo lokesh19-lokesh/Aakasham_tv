@@ -453,3 +453,34 @@ body {
   .nav-logo-rtv img { height: 50px; }
   .tool-btn { padding: 0.2rem; }
 }
+
+/* Telugu Typography Fixes */
+.lang-te h1, 
+.lang-te h2, 
+.lang-te h3, 
+.lang-te .article-title {
+  line-height: 1.6 !important;
+  font-family: 'Gidugu', 'Ramabhadra', 'Inter', sans-serif;
+}
+
+.lang-te .article-title {
+  font-size: 1.25rem; /* Telugu needs slightly larger size for clarity */
+}
+
+.lang-te .article-excerpt,
+.lang-te .article-content-wrapper p {
+  line-height: 1.8;
+  font-size: 1rem;
+}
+
+.article-detail-container h1 {
+  line-height: 1.4;
+  margin-bottom: 1.5rem;
+  font-weight: 800;
+}
+
+@media (max-width: 768px) {
+  .lang-te h1 {
+    font-size: 1.8rem !important;
+  }
+}

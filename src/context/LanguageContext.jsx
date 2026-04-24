@@ -15,13 +15,15 @@ export const LanguageProvider = ({ children }) => {
 
   useEffect(() => {
     localStorage.setItem('app_language', language);
+    document.documentElement.lang = language;
+    document.body.className = `lang-${language}`;
   }, [language]);
 
   /**
    * Helper function to translate content within components
    */
   const translateContent = async (text) => {
-    if (language === 'en' || !text) return text;
+    if (!text) return text;
     return await translateText(text, language);
   };
 

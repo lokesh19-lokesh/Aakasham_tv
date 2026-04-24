@@ -18,7 +18,7 @@ const CACHE_EXPIRY = 1000 * 60 * 60 * 24; // 24 hours
  * @returns {Promise<string>} - The translated text.
  */
 export const translateText = async (text, targetLang) => {
-  if (!text || targetLang === 'en') return text;
+  if (!text) return text;
 
   // 1. Check Dictionary First (Reliable and Instant)
   if (TRANSLATION_DICTIONARY[targetLang] && TRANSLATION_DICTIONARY[targetLang][text]) {
