@@ -4,6 +4,7 @@ import { supabase } from '../supabase';
 import Article from './Article';
 import HeroSection from './HeroSection';
 import TranslatedText from './TranslatedText';
+import SEO from './SEO';
 
 const CategoryPage = () => {
   const { categoryId, districtId } = useParams();
@@ -39,6 +40,10 @@ const CategoryPage = () => {
 
   return (
     <div className="category-container">
+      <SEO 
+        title={districtId || (categoryId ? categoryId.replace(/-/g, ' ') : "Latest News in Telugu")} 
+        description={`Read the latest ${districtId || categoryId || ''} news updates from Aakasham TV.`}
+      />
       {/* Show Hero Section only on Home or Category pages, not on deep district pages optionally */}
       {(!categoryId || categoryId === 'home') && <HeroSection />}
       

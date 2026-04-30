@@ -1,8 +1,10 @@
 import React from 'react';
 import TranslatedText from './TranslatedText';
+import SEO from './SEO';
 
 export const AboutUs = () => (
   <div className="static-page container" style={{ padding: '2rem 15px', minHeight: '60vh' }}>
+    <SEO title="About Us" description="Learn about Aakasham TV, a dynamic and fast-growing media organization committed to delivering credible journalism." />
     <div style={{ width: '100%', height: '300px', overflow: 'hidden', borderRadius: '12px', marginBottom: '2rem' }}>
       <img src="/about_us_header.png" alt="About Aakasham TV" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
     </div>
@@ -36,6 +38,7 @@ export const AboutUs = () => (
 
 export const ContactUs = () => (
   <div className="static-page container" style={{ padding: '2rem 15px', minHeight: '60vh' }}>
+    <SEO title="Contact Us" description="Get in touch with Aakasham TV. Reach out via email, phone, or visit our studios in Hyderabad." />
     <div style={{ width: '100%', height: '300px', overflow: 'hidden', borderRadius: '12px', marginBottom: '2rem' }}>
       <img src="/contact_us_header.png" alt="Contact Aakasham TV" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
     </div>
@@ -83,6 +86,7 @@ export const ContactUs = () => (
 
 export const PrivacyPolicy = () => (
   <div className="static-page container" style={{ padding: '4rem 15px', minHeight: '60vh' }}>
+    <SEO title="Privacy Policy" description="Aakasham TV Privacy Policy. Learn how we collect, use, and protect your personal information." />
     <h1 style={{ marginBottom: '2rem', color: '#001d3d' }}><TranslatedText>Privacy Policy</TranslatedText></h1>
     <p style={{ lineHeight: '1.8', fontSize: '1.1rem', color: '#333' }}>
       <TranslatedText>Your privacy is critically important to us. This privacy policy explains how we collect, use, and protect your personal information when you use our website. We do not sell your personal data to third parties.</TranslatedText>
@@ -96,6 +100,7 @@ export const PrivacyPolicy = () => (
 
 export const TermsOfService = () => (
   <div className="static-page container" style={{ padding: '4rem 15px', minHeight: '60vh' }}>
+    <SEO title="Terms of Service" description="Aakasham TV Terms of Service. Read the rules and guidelines for using our platform." />
     <h1 style={{ marginBottom: '2rem', color: '#001d3d' }}><TranslatedText>Terms of Service</TranslatedText></h1>
     <p style={{ lineHeight: '1.8', fontSize: '1.1rem', color: '#333' }}>
       <TranslatedText>By accessing and using Aakasham TV website, you accept and agree to be bound by the terms and provisions of this agreement. Any participation in this service will constitute acceptance of this agreement.</TranslatedText>

@@ -1,4 +1,5 @@
 import React from 'react';
+import { HelmetProvider } from 'react-helmet-async';
 import { Routes, Route, Link } from 'react-router-dom';
 import { LanguageProvider } from './context/LanguageContext';
 import Navbar from './components/Navbar';
@@ -13,8 +14,9 @@ import './index.css';
 
 function App() {
   return (
-    <LanguageProvider>
-      <div className="app">
+    <HelmetProvider>
+      <LanguageProvider>
+        <div className="app">
         <Navbar />
         <main className="main-content">
           <Routes>
@@ -59,6 +61,7 @@ function App() {
         </footer>
       </div>
     </LanguageProvider>
+    </HelmetProvider>
   );
 }
 

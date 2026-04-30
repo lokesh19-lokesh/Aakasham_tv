@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { supabase } from '../supabase';
 import TranslatedText from './TranslatedText';
+import SEO from './SEO';
 import { Calendar, User, ChevronLeft } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 
@@ -55,11 +56,19 @@ const ArticleDetail = () => {
     return videoId ? `https://www.youtube.com/embed/${videoId}` : url;
   };
 
-  if (loading) return <div className="container">Loading article...</div>;
-  if (!article) return <div className="container">Article not found.</div>;
+  if (loading) return <div className="container"><TranslatedText>Loading article...</TranslatedText></div>;
+  if (!article) return <div className="container"><TranslatedText>Article not found.</TranslatedText></div>;
+
+  const contentSnippet = article.content ? article.content.substring(0, 150) + '...' : '';
 
   return (
     <div className="article-detail-container">
+      <SEO 
+        title={article.title}
+        description={contentSnippet}
+        type="article"
+        image={article.image_url}
+      />
       <div className="container">
         <Link to="/" className="back-link">
           <ChevronLeft size={20} />
