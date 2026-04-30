@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { supabase } from '../supabase';
 import { ChevronLeft, ChevronRight, MessageCircle } from 'lucide-react';
 import TranslatedText from './TranslatedText';
@@ -8,6 +9,7 @@ const HeroSection = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [videoUrl, setVideoUrl] = useState('');
   const [whatsappLink, setWhatsappLink] = useState('https://whatsapp.com/channel/...');
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchHeroData();
@@ -55,6 +57,10 @@ const HeroSection = () => {
   const nextSlide = () => setCurrentSlide((prev) => (prev + 1) % slides.length);
   const prevSlide = () => setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
 
+  const handleSlideClick = (id) => {
+    navigate(`/article/${id}`);
+  };
+
   if (slides.length === 0 && !videoUrl) return null;
 
   return (
@@ -64,12 +70,17 @@ const HeroSection = () => {
         <div className="hero-slider">
           {slides.length > 0 ? (
             <div className="slider-wrapper">
-              <img src={slides[currentSlide].image_url} alt={slides[currentSlide].title} className="slide-img" />
-              <div className="slide-content">
-                <h3><TranslatedText>{slides[currentSlide].title}</TranslatedText></h3>
+              <div 
+                className="slide-clickable-area" 
+                onClick={() => handleSlideClick(slides[currentSlide].id)}
+              >
+                <img src={slides[currentSlide].image_url} alt={slides[currentSlide].title} className="slide-img" />
+                <div className="slide-content">
+                  <h3><TranslatedText>{slides[currentSlide].title}</TranslatedText></h3>
+                </div>
               </div>
-              <button className="slider-nav prev" onClick={prevSlide}><ChevronLeft /></button>
-              <button className="slider-nav next" onClick={nextSlide}><ChevronRight /></button>
+              <button className="slider-nav prev" onClick={(e) => { e.stopPropagation(); prevSlide(); }}><ChevronLeft /></button>
+              <button className="slider-nav next" onClick={(e) => { e.stopPropagation(); nextSlide(); }}><ChevronRight /></button>
             </div>
           ) : (
             <div className="slider-placeholder">No featured news</div>
@@ -123,6 +134,11 @@ const HeroSection = () => {
           background: #000;
           border-radius: 8px;
           overflow: hidden;
+        }
+        .slide-clickable-area {
+          cursor: pointer;
+          height: 100%;
+          width: 100%;
         }
         .slide-img {
           width: 100%;
