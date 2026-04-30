@@ -3,15 +3,35 @@ import { useParams, Link } from 'react-router-dom';
 import { supabase } from '../supabase';
 import TranslatedText from './TranslatedText';
 import { Calendar, User, ChevronLeft } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
 
 const ArticleDetail = () => {
   const { id } = useParams();
   const [article, setArticle] = useState(null);
   const [loading, setLoading] = useState(true);
+  const { language, translateContent } = useLanguage();
+  const [translatedContent, setTranslatedContent] = useState('');
 
   useEffect(() => {
     fetchArticle();
   }, [id]);
+
+  useEffect(() => {
+    const translateBody = async () => {
+      if (!article) return;
+      if (language === 'te') {
+        setTranslatedContent(article.content);
+        return;
+      }
+      try {
+        const result = await translateContent(article.content);
+        setTranslatedContent(result);
+      } catch (error) {
+        setTranslatedContent(article.content);
+      }
+    };
+    translateBody();
+  }, [article, language, translateContent]);
 
   const fetchArticle = async () => {
     setLoading(true);
@@ -87,7 +107,7 @@ const ArticleDetail = () => {
           )}
 
           <div className="article-body-content">
-            <div dangerouslySetInnerHTML={{ __html: article.content }} />
+            <div dangerouslySetInnerHTML={{ __html: translatedContent || article.content }} />
           </div>
 
           {article.whatsapp_link && (

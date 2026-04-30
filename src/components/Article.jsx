@@ -11,7 +11,7 @@ const Article = ({ originalArticle }) => {
 
   useEffect(() => {
     const translate = async () => {
-      if (language === 'en') {
+      if (language === 'te') {
         setTranslatedArticle(originalArticle);
         return;
       }
