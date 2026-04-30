@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { supabase } from '../supabase';
 import { useNavigate, Link } from 'react-router-dom';
+import { Star } from 'lucide-react';
 
 const AdminDashboard = () => {
   const [articles, setArticles] = useState([]);
@@ -53,6 +54,37 @@ const AdminDashboard = () => {
     }
   };
 
+  const handleToggleStar = async (article) => {
+    const newStatus = !article.is_hero_slider;
+    
+    // Optimistic UI update
+    setArticles(articles.map(a => a.id === article.id ? { ...a, is_hero_slider: newStatus } : a));
+
+    const payload = {
+      id: article.id,
+      title: article.title,
+      content: article.content,
+      image_url: article.image_url,
+      video_url: article.video_url,
+      category_id: article.category_id,
+      district_id: article.district_id,
+      is_hero_slider: newStatus,
+      whatsapp_link: article.whatsapp_link
+    };
+
+    const { error } = await supabase.functions.invoke('manage-articles', {
+      body: { 
+        action: 'update-article', 
+        data: payload 
+      }
+    });
+
+    if (error) {
+      alert('Error updating article: ' + error.message);
+      fetchArticles(); // Revert on error
+    }
+  };
+
   if (!session) return null;
 
   return (
@@ -89,7 +121,20 @@ const AdminDashboard = () => {
                       <div className="no-img-thumb" />
                     )}
                   </td>
-                  <td>{article.title}</td>
+                  <td className="title-cell">
+                    <button 
+                      className="star-btn"
+                      onClick={() => handleToggleStar(article)}
+                      title={article.is_hero_slider ? "Remove from Latest News" : "Add to Latest News"}
+                    >
+                      <Star 
+                        size={18} 
+                        fill={article.is_hero_slider ? "#f59e0b" : "none"} 
+                        color={article.is_hero_slider ? "#f59e0b" : "#ccc"} 
+                      />
+                    </button>
+                    <span>{article.title}</span>
+                  </td>
                   <td>{article.categories?.name}</td>
                   <td>{new Date(article.created_at).toLocaleDateString()}</td>
                   <td>
@@ -164,6 +209,23 @@ const AdminDashboard = () => {
           background: #f8f9fa;
           font-weight: 700;
           color: #001d3d;
+        }
+        .title-cell {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+        }
+        .star-btn {
+          background: none;
+          border: none;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          padding: 0;
+          transition: transform 0.2s;
+        }
+        .star-btn:hover {
+          transform: scale(1.1);
         }
         .table-thumb {
           width: 60px;

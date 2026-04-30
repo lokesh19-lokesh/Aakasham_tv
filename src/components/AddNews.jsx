@@ -272,8 +272,8 @@ const AddNews = () => {
               onChange={(e) => setFormData({...formData, is_hero_slider: e.target.checked})} 
             />
             <div>
-              <label htmlFor="hero">Feature in Home Page Slider</label>
-              <p>Check this to show this news in the main top slider of the homepage.</p>
+              <label htmlFor="hero">Feature in Latest News</label>
+              <p>Check this to show this news in the Latest News grid on the homepage.</p>
             </div>
           </div>
         </div>

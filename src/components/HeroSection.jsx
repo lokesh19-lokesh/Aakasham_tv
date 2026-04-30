@@ -29,7 +29,7 @@ const HeroSection = () => {
     const { data: sliderArticles } = await supabase
       .from('articles')
       .select('*')
-      .eq('is_hero_slider', true)
+      .order('created_at', { ascending: false })
       .limit(5);
     
     if (sliderArticles) setSlides(sliderArticles);

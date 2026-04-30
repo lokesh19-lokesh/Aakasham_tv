@@ -10,7 +10,7 @@ const CategoryPage = () => {
   const [articles, setArticles] = useState([]);
   const [loading, setLoading] = useState(true);
   
-  const displayTitle = districtId ? districtId : (categoryId ? categoryId.replace(/-/g, ' ') : "Trending News");
+  const displayTitle = districtId ? districtId : (categoryId ? categoryId.replace(/-/g, ' ') : "LATEST NEWS");
 
   useEffect(() => {
     fetchArticles();
@@ -22,6 +22,8 @@ const CategoryPage = () => {
 
     if (categoryId && categoryId !== 'home') {
       query = query.eq('categories.slug', categoryId);
+    } else {
+      query = query.eq('is_hero_slider', true);
     }
     
     if (districtId) {
