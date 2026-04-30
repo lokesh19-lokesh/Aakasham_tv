@@ -71,16 +71,7 @@ const Article = ({ originalArticle }) => {
           <span><TranslatedText>By</TranslatedText> {translatedArticle.author}</span> • <span>{new Date(translatedArticle.created_at).toLocaleDateString()}</span>
         </div>
 
-        <div className="article-content">
-          {isTranslating ? (
-            <>
-              <div className="skeleton-text" />
-              <div className="skeleton-text half" />
-            </>
-          ) : (
-            <p dangerouslySetInnerHTML={{ __html: translatedArticle.content.substring(0, 150) + '...' }} />
-          )}
-        </div>
+        {/* Content snippet removed as per request to only display title */}
 
         <button className="read-more-btn" onClick={(e) => { e.stopPropagation(); handleReadMore(); }}>
           {language === 'te' ? 'మరింత చదవండి' : language === 'hi' ? 'और पढ़ें' : 'Read More'}
