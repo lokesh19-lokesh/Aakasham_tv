@@ -10,7 +10,7 @@ const CategoryPage = () => {
   const [articles, setArticles] = useState([]);
   const [loading, setLoading] = useState(true);
   
-  const displayTitle = districtId ? districtId : (categoryId ? categoryId.replace(/-/g, ' ') : "LATEST NEWS");
+  const displayTitle = districtId ? districtId : (categoryId ? categoryId.replace(/-/g, ' ') : "Trending News");
 
   useEffect(() => {
     fetchArticles();
