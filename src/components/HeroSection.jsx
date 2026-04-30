@@ -7,9 +7,18 @@ import TranslatedText from './TranslatedText';
 const HeroSection = () => {
   const [slides, setSlides] = useState([]);
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [videoUrl, setVideoUrl] = useState('');
   const [whatsappLink, setWhatsappLink] = useState('https://whatsapp.com/channel/...');
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (slides.length <= 1) return;
+    
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % slides.length);
+    }, 4000);
+    
+    return () => clearInterval(timer);
+  }, [slides.length]);
 
   useEffect(() => {
     fetchHeroData();
@@ -24,17 +33,6 @@ const HeroSection = () => {
       .limit(5);
     
     if (sliderArticles) setSlides(sliderArticles);
-
-    // Fetch latest video
-    const { data: videoArticle } = await supabase
-      .from('articles')
-      .select('video_url')
-      .not('video_url', 'is', null)
-      .order('created_at', { ascending: false })
-      .limit(1)
-      .single();
-    
-    if (videoArticle) setVideoUrl(videoArticle.video_url);
   };
 
   const getEmbedUrl = (url) => {
@@ -54,14 +52,19 @@ const HeroSection = () => {
     return videoId ? `https://www.youtube.com/embed/${videoId}` : url;
   };
 
-  const nextSlide = () => setCurrentSlide((prev) => (prev + 1) % slides.length);
-  const prevSlide = () => setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
+  const nextSlide = () => {
+    if (slides.length > 0) setCurrentSlide((prev) => (prev + 1) % slides.length);
+  };
+  
+  const prevSlide = () => {
+    if (slides.length > 0) setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
+  };
 
   const handleSlideClick = (id) => {
     navigate(`/article/${id}`);
   };
 
-  if (slides.length === 0 && !videoUrl) return null;
+  if (slides.length === 0) return null;
 
   return (
     <div className="hero-container">
@@ -90,16 +93,20 @@ const HeroSection = () => {
         {/* Right Sidebar Section */}
         <div className="hero-sidebar">
           <div className="video-section">
-            {videoUrl ? (
-              <iframe 
-                src={getEmbedUrl(videoUrl)} 
-                title="News Video"
-                frameBorder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              ></iframe>
+            {slides.length > 0 && slides[currentSlide].video_url ? (
+              <div className="video-slider-wrapper">
+                <iframe 
+                  src={getEmbedUrl(slides[currentSlide].video_url)} 
+                  title="News Video"
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                ></iframe>
+                <button className="slider-nav prev" onClick={(e) => { e.stopPropagation(); prevSlide(); }}><ChevronLeft size={16} /></button>
+                <button className="slider-nav next" onClick={(e) => { e.stopPropagation(); nextSlide(); }}><ChevronRight size={16} /></button>
+              </div>
             ) : (
-              <div className="video-placeholder">Latest News Video</div>
+              <div className="video-placeholder">No Video for this News</div>
             )}
           </div>
           
@@ -179,8 +186,18 @@ const HeroSection = () => {
           background: #000;
           border-radius: 8px;
           overflow: hidden;
+          position: relative;
         }
-        .video-section iframe { width: 100%; height: 100%; }
+        .video-slider-wrapper {
+          width: 100%;
+          height: 100%;
+          position: relative;
+        }
+        .video-slider-wrapper iframe { width: 100%; height: 100%; }
+        
+        .video-slider-wrapper .slider-nav {
+          padding: 0.5rem 0.2rem;
+        }
         
         .whatsapp-card {
           background: #001d3d;
