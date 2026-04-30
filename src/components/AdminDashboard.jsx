@@ -54,11 +54,12 @@ const AdminDashboard = () => {
     }
   };
 
-  const handleToggleStar = async (article) => {
-    const newStatus = !article.is_hero_slider;
+  const handleToggleStar = async (article, type = 'latest') => {
+    const field = type === 'latest' ? 'is_hero_slider' : 'is_top_hero';
+    const newStatus = !article[field];
     
     // Optimistic UI update
-    setArticles(articles.map(a => a.id === article.id ? { ...a, is_hero_slider: newStatus } : a));
+    setArticles(articles.map(a => a.id === article.id ? { ...a, [field]: newStatus } : a));
 
     const payload = {
       id: article.id,
@@ -68,7 +69,8 @@ const AdminDashboard = () => {
       video_url: article.video_url,
       category_id: article.category_id,
       district_id: article.district_id,
-      is_hero_slider: newStatus,
+      is_hero_slider: type === 'latest' ? newStatus : article.is_hero_slider,
+      is_top_hero: type === 'hero' ? newStatus : article.is_top_hero,
       whatsapp_link: article.whatsapp_link
     };
 
@@ -122,17 +124,30 @@ const AdminDashboard = () => {
                     )}
                   </td>
                   <td className="title-cell">
-                    <button 
-                      className="star-btn"
-                      onClick={() => handleToggleStar(article)}
-                      title={article.is_hero_slider ? "Remove from Latest News" : "Add to Latest News"}
-                    >
-                      <Star 
-                        size={18} 
-                        fill={article.is_hero_slider ? "#f59e0b" : "none"} 
-                        color={article.is_hero_slider ? "#f59e0b" : "#ccc"} 
-                      />
-                    </button>
+                    <div style={{ display: 'flex', gap: '0.8rem', marginRight: '0.5rem' }}>
+                      <button 
+                        className="star-btn"
+                        onClick={() => handleToggleStar(article, 'latest')}
+                        title={article.is_hero_slider ? "Remove from Latest News" : "Add to Latest News"}
+                      >
+                        <Star 
+                          size={18} 
+                          fill={article.is_hero_slider ? "#f59e0b" : "none"} 
+                          color={article.is_hero_slider ? "#f59e0b" : "#ccc"} 
+                        />
+                      </button>
+                      <button 
+                        className="star-btn"
+                        onClick={() => handleToggleStar(article, 'hero')}
+                        title={article.is_top_hero ? "Remove from Hero Section" : "Add to Hero Section"}
+                      >
+                        <Star 
+                          size={18} 
+                          fill={article.is_top_hero ? "#CC0000" : "none"} 
+                          color={article.is_top_hero ? "#CC0000" : "#ccc"} 
+                        />
+                      </button>
+                    </div>
                     <span>{article.title}</span>
                   </td>
                   <td>{article.categories?.name}</td>

@@ -14,6 +14,7 @@ const AddNews = () => {
     category_id: '',
     district_id: '',
     is_hero_slider: false,
+    is_top_hero: false,
     whatsapp_link: ''
   });
   const navigate = useNavigate();
@@ -44,6 +45,7 @@ const AddNews = () => {
         category_id: data.category_id || '',
         district_id: data.district_id || '',
         is_hero_slider: data.is_hero_slider || false,
+        is_top_hero: data.is_top_hero || false,
         whatsapp_link: data.whatsapp_link || ''
       });
     }
@@ -267,13 +269,26 @@ const AddNews = () => {
           <div className="checkbox-group">
             <input 
               type="checkbox" 
-              id="hero"
+              id="latest"
               checked={formData.is_hero_slider} 
               onChange={(e) => setFormData({...formData, is_hero_slider: e.target.checked})} 
             />
             <div>
-              <label htmlFor="hero">Feature in Latest News</label>
+              <label htmlFor="latest">Feature in Latest News</label>
               <p>Check this to show this news in the Latest News grid on the homepage.</p>
+            </div>
+          </div>
+          
+          <div className="checkbox-group" style={{ marginTop: '1.5rem' }}>
+            <input 
+              type="checkbox" 
+              id="top_hero"
+              checked={formData.is_top_hero} 
+              onChange={(e) => setFormData({...formData, is_top_hero: e.target.checked})} 
+            />
+            <div>
+              <label htmlFor="top_hero">Feature in Home Page Hero Section</label>
+              <p>Check this to feature this news in the main top slider of the homepage.</p>
             </div>
           </div>
         </div>

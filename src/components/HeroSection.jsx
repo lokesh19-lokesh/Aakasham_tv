@@ -25,10 +25,11 @@ const HeroSection = () => {
   }, []);
 
   const fetchHeroData = async () => {
-    // Fetch articles marked for hero slider
+    // Fetch articles marked specifically for the top hero slider
     const { data: sliderArticles } = await supabase
       .from('articles')
       .select('*')
+      .eq('is_top_hero', true)
       .order('created_at', { ascending: false })
       .limit(5);
     
