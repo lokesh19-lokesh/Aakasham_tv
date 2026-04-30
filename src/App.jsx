@@ -1,5 +1,5 @@
 import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Link } from 'react-router-dom';
 import { LanguageProvider } from './context/LanguageContext';
 import Navbar from './components/Navbar';
 import CategoryPage from './components/CategoryPage';
@@ -8,6 +8,7 @@ import AdminLogin from './components/AdminLogin';
 import AdminDashboard from './components/AdminDashboard';
 import AddNews from './components/AddNews';
 import ArticleDetail from './components/ArticleDetail';
+import { AboutUs, ContactUs, PrivacyPolicy, TermsOfService } from './components/StaticPages';
 import './index.css';
 
 function App() {
@@ -22,6 +23,10 @@ function App() {
             <Route path="/admin/dashboard" element={<AdminDashboard />} />
             <Route path="/admin/add-news" element={<AddNews />} />
             <Route path="/article/:id" element={<ArticleDetail />} />
+            <Route path="/about" element={<AboutUs />} />
+            <Route path="/contact" element={<ContactUs />} />
+            <Route path="/privacy" element={<PrivacyPolicy />} />
+            <Route path="/terms" element={<TermsOfService />} />
             <Route path="/:categoryId" element={<CategoryPage />} />
             <Route path="/:categoryId/:districtId" element={<CategoryPage />} />
           </Routes>
@@ -34,10 +39,10 @@ function App() {
               {' | '}Designed by <a href="https://thepatternscompany.com/" target="_blank" rel="noopener noreferrer" style={{ color: '#18d73bff', textDecoration: 'none', fontWeight: 'bold' }}>The Patterns Company</a>
             </p>
             <div className="footer-links">
-              <a href="#"><TranslatedText>About Us</TranslatedText></a>
-              <a href="#"><TranslatedText>Contact Us</TranslatedText></a>
-              <a href="#"><TranslatedText>Privacy Policy</TranslatedText></a>
-              <a href="#"><TranslatedText>Terms of Service</TranslatedText></a>
+              <Link to="/about"><TranslatedText>About Us</TranslatedText></Link>
+              <Link to="/contact"><TranslatedText>Contact Us</TranslatedText></Link>
+              <Link to="/privacy"><TranslatedText>Privacy Policy</TranslatedText></Link>
+              <Link to="/terms"><TranslatedText>Terms of Service</TranslatedText></Link>
             </div>
             <div className="footer-social" style={{ display: 'flex', justifyContent: 'center', gap: '1.5rem', marginTop: '1.5rem' }}>
               <a href="https://www.youtube.com/channel/UCNAvk1-pAEntHLGOuaAKlDg" target="_blank" rel="noopener noreferrer" style={{ color: '#ccc', transition: 'color 0.3s' }} onMouseOver={(e) => e.currentTarget.style.color = '#ff0000'} onMouseOut={(e) => e.currentTarget.style.color = '#ccc'}>
