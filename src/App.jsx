@@ -26,10 +26,13 @@ function App() {
             <Route path="/:categoryId/:districtId" element={<CategoryPage />} />
           </Routes>
         </main>
-        
+
         <footer className="footer-rtv">
           <div className="footer-content">
-            <p><TranslatedText>© 2026 Aakasham TV. All rights reserved.</TranslatedText></p>
+            <p>
+              <TranslatedText>© 2026 Aakasham TV. All rights reserved.</TranslatedText>
+              {' | '}Designed by <a href="https://thepatternscompany.com/" target="_blank" rel="noopener noreferrer" style={{ color: '#18d73bff', textDecoration: 'none', fontWeight: 'bold' }}>The Patterns Company</a>
+            </p>
             <div className="footer-links">
               <a href="#"><TranslatedText>About Us</TranslatedText></a>
               <a href="#"><TranslatedText>Contact Us</TranslatedText></a>
