@@ -7,7 +7,7 @@ import TranslatedText from './TranslatedText';
 const HeroSection = () => {
   const [slides, setSlides] = useState([]);
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [whatsappLink, setWhatsappLink] = useState('https://whatsapp.com/channel/...');
+  const [whatsappLink, setWhatsappLink] = useState('https://whatsapp.com/channel/0029Va571Jz6LwHkH9y0ik3b');
   const [epaperData, setEpaperData] = useState(null);
   const navigate = useNavigate();
 
@@ -122,10 +122,10 @@ const HeroSection = () => {
           
           <a href={whatsappLink} target="_blank" rel="noopener noreferrer" className="whatsapp-card">
             <div className="whatsapp-content">
-              <MessageCircle size={32} />
+              <img src="/whastapp.enc" alt="WhatsApp" className="whatsapp-icon-img" />
               <span>Join our WhatsApp Channel</span>
             </div>
-            <div className="whatsapp-logo">R</div>
+            <div className="whatsapp-arrow">→</div>
           </a>
 
           <div className="sidebar-promo">
@@ -236,7 +236,8 @@ const HeroSection = () => {
         }
         .whatsapp-card:hover { transform: scale(1.02); }
         .whatsapp-content { display: flex; align-items: center; gap: 0.8rem; font-weight: bold; }
-        .whatsapp-logo { font-size: 2rem; font-weight: 900; color: #CC0000; }
+        .whatsapp-icon-img { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; }
+        .whatsapp-arrow { font-size: 1.5rem; font-weight: 900; color: white; }
         
         .sidebar-promo {
           position: relative;
