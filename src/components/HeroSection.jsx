@@ -129,6 +129,7 @@ const HeroSection = () => {
           </a>
 
           <div className="sidebar-promo">
+             <div className="epaper-label">Daily E-Paper</div>
              {epaperData ? (
                <a href={epaperData.content} target="_blank" rel="noopener noreferrer">
                  <img src={epaperData.image_url || "https://via.placeholder.com/300x150?text=Download+E-Paper"} alt="Daily E-Paper" />
@@ -149,14 +150,21 @@ const HeroSection = () => {
         .hero-grid {
           display: grid;
           grid-template-columns: 2fr 1fr;
-          gap: 1rem;
-          height: 450px;
+          gap: 1.5rem;
+          min-height: 450px;
+          height: auto;
         }
         .hero-slider {
           position: relative;
           background: #000;
           border-radius: 8px;
           overflow: hidden;
+          min-height: 450px;
+          display: flex;
+        }
+        .slider-wrapper {
+          width: 100%;
+          height: 100%;
         }
         .slide-clickable-area {
           cursor: pointer;
@@ -198,7 +206,7 @@ const HeroSection = () => {
           gap: 1rem;
         }
         .video-section {
-          flex: 1;
+          height: 250px;
           background: #000;
           border-radius: 8px;
           overflow: hidden;
@@ -230,10 +238,42 @@ const HeroSection = () => {
         .whatsapp-content { display: flex; align-items: center; gap: 0.8rem; font-weight: bold; }
         .whatsapp-logo { font-size: 2rem; font-weight: 900; color: #CC0000; }
         
+        .sidebar-promo {
+          position: relative;
+          background: white;
+          border-radius: 8px;
+          overflow: hidden;
+          box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+          border: 1px solid #eee;
+          transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .sidebar-promo:hover {
+          transform: translateY(-4px);
+          box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+        }
         .sidebar-promo img {
           width: 100%;
-          border-radius: 8px;
-          object-fit: cover;
+          height: auto;
+          display: block;
+          transition: opacity 0.3s;
+        }
+        .sidebar-promo:hover img {
+          opacity: 0.9;
+        }
+        .epaper-label {
+          position: absolute;
+          top: 10px;
+          left: 10px;
+          background: #CC0000;
+          color: white;
+          padding: 4px 10px;
+          font-size: 0.75rem;
+          font-weight: 800;
+          border-radius: 4px;
+          text-transform: uppercase;
+          letter-spacing: 1px;
+          z-index: 1;
+          box-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
 
         @media (max-width: 992px) {
