@@ -162,6 +162,28 @@ serve(async (req) => {
       })
     }
 
+    if (action === 'delete-epaper') {
+      const { data: category } = await supabaseClient
+        .from('categories')
+        .select('id')
+        .eq('slug', 'e-paper')
+        .single()
+      
+      if (!category) throw new Error('E-Paper category not found')
+
+      const { error } = await supabaseClient
+        .from('articles')
+        .delete()
+        .eq('category_id', category.id)
+        .eq('title', 'DAILY_EPAPER')
+
+      if (error) throw error
+      return new Response(JSON.stringify({ success: true }), {
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        status: 200,
+      })
+    }
+
     return new Response(JSON.stringify({ error: 'Action not found' }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       status: 400,

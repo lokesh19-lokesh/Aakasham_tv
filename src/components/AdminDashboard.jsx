@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { supabase } from '../supabase';
 import { useNavigate, Link } from 'react-router-dom';
-import { Star, Upload, FileText, CheckCircle } from 'lucide-react';
+import { Star, Upload, FileText, CheckCircle, Trash2 } from 'lucide-react';
 
 const AdminDashboard = () => {
   const [articles, setArticles] = useState([]);
@@ -148,6 +148,23 @@ const AdminDashboard = () => {
     }
   };
 
+  const handleDeleteEpaper = async () => {
+    if (!window.confirm('Are you sure you want to delete the current E-Paper? This cannot be undone.')) return;
+    setEpaperLoading(true);
+    try {
+      const { error } = await supabase.functions.invoke('manage-articles', {
+        body: { action: 'delete-epaper', data: {} }
+      });
+      if (error) throw error;
+      setLatestEpaper(null);
+      alert('E-Paper deleted successfully.');
+    } catch (err) {
+      alert('Delete failed: ' + err.message);
+    } finally {
+      setEpaperLoading(false);
+    }
+  };
+
   if (!session) return null;
 
   return (
@@ -170,7 +187,12 @@ const AdminDashboard = () => {
               <div className="status-badge active">
                 <CheckCircle size={16} />
                 <span>Current E-Paper: {new Date(latestEpaper.created_at).toLocaleDateString()}</span>
-                <a href={latestEpaper.content} target="_blank" rel="noreferrer" className="view-link">View Current PDF</a>
+                <div className="status-actions">
+                  <a href={latestEpaper.content} target="_blank" rel="noreferrer" className="view-link">View Current PDF</a>
+                  <button onClick={handleDeleteEpaper} className="delete-epaper-btn" title="Delete current E-Paper">
+                    <Trash2 size={16} />
+                  </button>
+                </div>
               </div>
             ) : (
               <div className="status-badge empty">No E-Paper uploaded yet</div>
@@ -393,7 +415,10 @@ const AdminDashboard = () => {
         .status-badge { display: flex; align-items: center; gap: 0.6rem; padding: 0.8rem 1.2rem; border-radius: 8px; font-weight: 600; font-size: 0.9rem; }
         .status-badge.active { background: #e6fffa; color: #2c7a7b; border: 1px solid #b2f5ea; }
         .status-badge.empty { background: #fff5f5; color: #c53030; border: 1px solid #fed7d7; }
-        .view-link { margin-left: auto; color: #007bff; text-decoration: underline; }
+        .status-actions { margin-left: auto; display: flex; align-items: center; gap: 1rem; }
+        .view-link { color: #007bff; text-decoration: underline; font-size: 0.9rem; }
+        .delete-epaper-btn { background: #fff5f5; color: #c53030; border: 1px solid #feb2b2; padding: 4px 8px; border-radius: 4px; cursor: pointer; display: flex; align-items: center; transition: all 0.2s; }
+        .delete-epaper-btn:hover { background: #feb2b2; color: #fff; }
 
         .epaper-upload-form { display: flex; flex-direction: column; gap: 1.5rem; }
         .upload-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
