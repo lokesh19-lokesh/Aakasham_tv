@@ -5,17 +5,27 @@ import { TELANGANA_DISTRICTS, ANDHRA_PRADESH_DISTRICTS, MORE_CATEGORIES } from '
 import logo from '../assets/logo.png';
 import LanguageSelector from './LanguageSelector';
 import TranslatedText from './TranslatedText';
+import { supabase } from '../supabase';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(null);
   const [dateTime, setDateTime] = useState(new Date());
+  const [epaperUrl, setEpaperUrl] = useState(null);
   const location = useLocation();
 
   useEffect(() => {
     const timer = setInterval(() => setDateTime(new Date()), 1000);
+    fetchLatestEpaper();
     return () => clearInterval(timer);
   }, []);
+
+  const fetchLatestEpaper = async () => {
+    const { data, error } = await supabase.functions.invoke('manage-articles', {
+      body: { action: 'get-latest-epaper', data: {} }
+    });
+    if (!error && data) setEpaperUrl(data.content);
+  };
 
   useEffect(() => {
     setIsMenuOpen(false);
@@ -100,9 +110,15 @@ const Navbar = () => {
                     <ul className={`dropdown-menu ${activeDropdown === item.name ? 'show' : ''}`}>
                       {item.data.map(subItem => (
                         <li key={subItem}>
-                          <Link to={`/${item.name.toLowerCase().replace(' ', '-')}/${subItem.toLowerCase().replace(' ', '-')}`}>
-                            <TranslatedText>{subItem}</TranslatedText>
-                          </Link>
+                          {subItem === 'E-Paper' || subItem === 'E-Papers' ? (
+                            <a href={epaperUrl || '#'} target="_blank" rel="noopener noreferrer">
+                               <TranslatedText>{subItem}</TranslatedText>
+                            </a>
+                          ) : (
+                            <Link to={`/${item.name.toLowerCase().replace(' ', '-')}/${subItem.toLowerCase().replace(' ', '-')}`}>
+                              <TranslatedText>{subItem}</TranslatedText>
+                            </Link>
+                          )}
                         </li>
                       ))}
                     </ul>

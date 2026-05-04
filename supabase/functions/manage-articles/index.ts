@@ -90,6 +90,78 @@ serve(async (req) => {
       })
     }
 
+    if (action === 'upload-epaper') {
+      const { pdf_url, image_url } = data
+      
+      // 1. Get E-Paper category ID
+      const { data: category } = await supabaseClient
+        .from('categories')
+        .select('id')
+        .eq('slug', 'e-paper')
+        .single()
+      
+      if (!category) throw new Error('E-Paper category not found')
+
+      // 2. Check if a daily e-paper record already exists
+      const { data: existing } = await supabaseClient
+        .from('articles')
+        .select('id, content')
+        .eq('category_id', category.id)
+        .eq('title', 'DAILY_EPAPER')
+        .single()
+
+      let result;
+      if (existing) {
+        // Update existing
+        const { data: updated, error } = await supabaseClient
+          .from('articles')
+          .update({ 
+            content: pdf_url, // We store PDF URL in content
+            image_url: image_url 
+          })
+          .eq('id', existing.id)
+          .select()
+        if (error) throw error
+        result = updated
+      } else {
+        // Create new
+        const { data: inserted, error } = await supabaseClient
+          .from('articles')
+          .insert([{ 
+            title: 'DAILY_EPAPER',
+            content: pdf_url,
+            image_url: image_url,
+            category_id: category.id
+          }])
+          .select()
+        if (error) throw error
+        result = inserted
+      }
+
+      return new Response(JSON.stringify(result), {
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        status: 200,
+      })
+    }
+
+    if (action === 'get-latest-epaper') {
+      const { data: epaper, error } = await supabaseClient
+        .from('articles')
+        .select('*, categories!inner(slug)')
+        .eq('categories.slug', 'e-paper')
+        .eq('title', 'DAILY_EPAPER')
+        .order('created_at', { ascending: false })
+        .limit(1)
+        .single()
+
+      if (error && error.code !== 'PGRST116') throw error // PGRST116 is 'no rows returned'
+      
+      return new Response(JSON.stringify(epaper || null), {
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        status: 200,
+      })
+    }
+
     return new Response(JSON.stringify({ error: 'Action not found' }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       status: 400,

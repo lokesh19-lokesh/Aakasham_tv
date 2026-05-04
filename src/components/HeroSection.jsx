@@ -8,6 +8,7 @@ const HeroSection = () => {
   const [slides, setSlides] = useState([]);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [whatsappLink, setWhatsappLink] = useState('https://whatsapp.com/channel/...');
+  const [epaperData, setEpaperData] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -22,7 +23,15 @@ const HeroSection = () => {
 
   useEffect(() => {
     fetchHeroData();
+    fetchLatestEpaper();
   }, []);
+
+  const fetchLatestEpaper = async () => {
+    const { data, error } = await supabase.functions.invoke('manage-articles', {
+      body: { action: 'get-latest-epaper', data: {} }
+    });
+    if (!error && data) setEpaperData(data);
+  };
 
   const fetchHeroData = async () => {
     // Fetch articles marked specifically for the top hero slider
@@ -120,7 +129,13 @@ const HeroSection = () => {
           </a>
 
           <div className="sidebar-promo">
-             <img src="https://via.placeholder.com/300x150?text=E-Paper+Click+Here" alt="E-Paper" />
+             {epaperData ? (
+               <a href={epaperData.content} target="_blank" rel="noopener noreferrer">
+                 <img src={epaperData.image_url || "https://via.placeholder.com/300x150?text=Download+E-Paper"} alt="Daily E-Paper" />
+               </a>
+             ) : (
+               <img src="https://via.placeholder.com/300x150?text=E-Paper+Coming+Soon" alt="E-Paper" />
+             )}
           </div>
         </div>
       </div>
