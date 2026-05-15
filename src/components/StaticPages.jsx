@@ -43,20 +43,20 @@ export const ContactUs = () => (
       <img src="/contact_us_header.png" alt="Contact Aakasham TV" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
     </div>
     <h1 style={{ marginBottom: '1.5rem', color: '#001d3d', fontSize: '2.5rem' }}><TranslatedText>Contact Us</TranslatedText></h1>
-    
+
     <div style={{ display: 'flex', flexWrap: 'wrap', gap: '3rem' }}>
       <div style={{ flex: '1 1 300px' }}>
         <p style={{ lineHeight: '1.8', fontSize: '1.1rem', color: '#333', marginBottom: '1.5rem' }}>
           <TranslatedText>We value your feedback and inquiries. Please reach out to us:</TranslatedText>
         </p>
         <div style={{ marginBottom: '1rem' }}>
-          <strong><TranslatedText>Email</TranslatedText>:</strong> info@aakasham.tv
+          <strong><TranslatedText>Email</TranslatedText>:</strong> info@aakasham.com
         </div>
         <div style={{ marginBottom: '1rem' }}>
-          <strong><TranslatedText>Phone</TranslatedText>:</strong> +91 9876543210
+          <strong><TranslatedText>Phone</TranslatedText>:</strong> +91 7777888806
         </div>
         <div style={{ marginBottom: '1rem' }}>
-          <strong><TranslatedText>Address</TranslatedText>:</strong> <TranslatedText>Aakasham TV Studios, Hyderabad, Telangana, India.</TranslatedText>
+          <strong><TranslatedText>Address</TranslatedText>:</strong> <TranslatedText>Aakasham Media Pvt Ltd- 1st Floor, Amrutha Mall, Somajiguda Circle,Rajbhavan Road Hyderabad.</TranslatedText>
         </div>
       </div>
 
