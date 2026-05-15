@@ -278,9 +278,18 @@ const HeroSection = () => {
         }
 
         @media (max-width: 992px) {
-          .hero-grid { grid-template-columns: 1fr; height: auto; }
-          .hero-slider { height: 300px; }
-          .video-section { height: 200px; }
+          .hero-grid { 
+            grid-template-columns: 1fr; 
+            height: auto; 
+            min-height: auto; 
+          }
+          .hero-slider { 
+            height: 250px; 
+            min-height: auto; 
+          }
+          .video-section { 
+            height: 200px; 
+          }
         }
       `}</style>
     </div>
